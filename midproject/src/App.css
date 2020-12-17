@@ -1,0 +1,33 @@
+/*User.css */
+.user{
+  border:5px solid red;
+   position:unset;
+   padding: 15px;
+   margin: 10px;
+  }
+
+  /*User.css */
+.todo{
+  border:5px solid black;
+   position:unset;
+   padding: 15px;
+   margin: 10px;
+  }
+
+  
+  /*User.css */
+.todos{
+  border:5px solid black;
+   padding: 15px;
+   margin: 10px;
+    height: 10%;
+    overflow: auto;
+  
+  }
+
+ 
+
+ 
+
+
+

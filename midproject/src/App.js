@@ -5,10 +5,11 @@ import axios from './moduls/utils';
 import User from './moduls/User'
 import TodosComp from './moduls/Todos'
 import AddUserComp from './moduls/AddUser'
+import PostsComp from './moduls/posts/posts'
 class App extends Component {
   constructor(){
     super()
-    this.state = {search:"",users: [],posts: [],todos:[],userActive:0, nextUserId:11, nextTodoId:201,isUserAddNeeded:false}
+    this.state = {search:"",users: [],posts: [],todos:[],userActive:0, nextUserId:11,nextPostId:101, nextTodoId:201,isUserAddNeeded:false}
   }
 
    deleteUser= (id)=> {
@@ -85,6 +86,18 @@ class App extends Component {
    axios.getAllPosts().then(res=>this.setState({posts: res.data}))
    axios.getAllTodos().then(res=>this.setState({todos: res.data}))
   }
+
+  addPost= (data,userId) =>{
+    let newPost={
+      userId:userId,
+      title:data.title,
+      body:data.body,
+      id:this.state.nextPostId
+    }
+    this.setState({nextPostId:this.state.nextPostId+1})
+    this.setState({posts:[newPost,...this.state.posts]})
+  }
+
   render(){
     //users
     let users=this.state.users
@@ -100,7 +113,7 @@ class App extends Component {
 
 
     let todosOrAddUser=undefined
-
+    let posts
     if(this.state.isUserAddNeeded==true) {
       todosOrAddUser=<AddUserComp sendNewUserCallback={data=>this.addUser(data)} cancelCallback={data=>this.setState({isUserAddNeeded:false})} />
     }
@@ -108,9 +121,16 @@ class App extends Component {
       if(this.state.userActive!=0){
         todosOrAddUser=this.state.todos.filter(item=>item.userId==this.state.userActive)
         console.log(todosOrAddUser)
-        todosOrAddUser= <TodosComp newTodoCallback={(data,userId)=>this.addTodo(data,userId)}  changeDataCallback={data=>this.changeTodos(data)} userActive={this.state.userActive} todos={todosOrAddUser} />
+        todosOrAddUser= <TodosComp newTodoCallback={(data,userId)=>this.addTodo(data,userId)}  changeTodosDataCallback={data=>this.changeTodos(data)} userActive={this.state.userActive} todos={todosOrAddUser} />
         //console.log(todos)
+
+        posts=this.state.posts.filter(item=>item.userId==this.state.userActive)
+        posts=<PostsComp newPostCallback={(data,userId)=>this.addPost(data,userId)}  changePostsDataCallback={data=>this.changePosts(data)} userActive={this.state.userActive} posts={posts}/>
     }
+
+
+
+    
 
    
 
@@ -138,6 +158,7 @@ class App extends Component {
         <h1 class="text-center">Mange Todos&Posts</h1>
 
        {todosOrAddUser}
+       {posts}
         </div>
         
       </div>

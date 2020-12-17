@@ -20,7 +20,7 @@ class TodosComp extends Component{
   
 
   sendCompleted= (data)=> {
-      this.props.changeDataCallback(data);
+      this.props.changeTodosDataCallback(data);
   }
 
   sendNewTodo= (data)=> {
@@ -61,7 +61,7 @@ class TodosComp extends Component{
 
          
       <div  class=" todos text-center">
-          <strong>User id: </strong>{this.props.userActive} 
+          <strong>Todos User: </strong>{this.props.userActive} 
           <button onClick={()=>this.setState({isNeedAdd:true})} type="button" style={{width:"100%", margin:"5px"}}  class="btn btn-info">Add Todo</button>
           {todos}
       </div>

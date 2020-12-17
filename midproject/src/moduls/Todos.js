@@ -24,10 +24,8 @@ class TodosComp extends Component{
   }
 
   sendNewTodo= (data)=> {
-    let userId={...this.props.todos}
-    userId=userId[0].userId
-
-    this.props.newTodoCallback(data,userId);
+    
+    this.props.newTodoCallback(data,this.props.userActive);
     this.setState({isNeedAdd:false})
   }
 
@@ -35,6 +33,7 @@ class TodosComp extends Component{
  
   render(){
       let todos
+      
     if(this.state.isNeedAdd){
         todos=<AddTodoComp sendNewTodoCallback={data=>this.sendNewTodo(data)} cancelCallback={data=>this.setState({isNeedAdd:false})} />
     }
@@ -52,10 +51,7 @@ class TodosComp extends Component{
         }
     }
 
-     
-
-      let userId={...this.props.todos}
-      userId=userId[0].userId
+    
       
 
     
@@ -65,7 +61,7 @@ class TodosComp extends Component{
 
          
       <div  class=" todos text-center">
-          <strong>User id: </strong> {userId}
+          <strong>User id: </strong>{this.props.userActive} 
           <button onClick={()=>this.setState({isNeedAdd:true})} type="button" style={{width:"100%", margin:"5px"}}  class="btn btn-info">Add Todo</button>
           {todos}
       </div>

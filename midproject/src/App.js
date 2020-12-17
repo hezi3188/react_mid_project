@@ -4,11 +4,11 @@ import './App.css';
 import axios from './moduls/utils';
 import User from './moduls/User'
 import TodosComp from './moduls/Todos'
-
+import AddUserComp from './moduls/AddUser'
 class App extends Component {
   constructor(){
     super()
-    this.state = {search:"",users: [],posts: [],todos:[],userActive:0,nextTodoId:201}
+    this.state = {search:"",users: [],posts: [],todos:[],userActive:0, nextUserId:11, nextTodoId:201,isUserAddNeeded:false}
   }
 
    deleteUser= (id)=> {
@@ -29,8 +29,17 @@ class App extends Component {
      this.setState({users:users})
    }
 
-  addUser= ()=> {
-   
+  addUser= (data)=> {
+   let newUser={
+     id:this.state.nextUserId,
+     address:{street:"",city:"",zipcode:0},
+     name:data.name,
+     email:data.email
+   }
+
+   let users=[newUser,...this.state.users]
+   this.setState({users:users})
+   this.setState({nextUserId:this.state.nextUserId+1,isUserAddNeeded:false})
   }
 
   isUserCompletedMissions=(id)=>{
@@ -90,12 +99,20 @@ class App extends Component {
     })
 
 
-    let todos=undefined
-    if(this.state.userActive!=0){
-      todos=this.state.todos.filter(item=>item.userId==this.state.userActive)
-      console.log(todos)
-      todos= <TodosComp newTodoCallback={(data,userId)=>this.addTodo(data,userId)}  changeDataCallback={data=>this.changeTodos(data)} todos={todos} />
-      //console.log(todos)
+    let todosOrAddUser=undefined
+
+    if(this.state.isUserAddNeeded==true) {
+      todosOrAddUser=<AddUserComp sendNewUserCallback={data=>this.addUser(data)} cancelCallback={data=>this.setState({isUserAddNeeded:false})} />
+    }
+    else{
+      if(this.state.userActive!=0){
+        todosOrAddUser=this.state.todos.filter(item=>item.userId==this.state.userActive)
+        console.log(todosOrAddUser)
+        todosOrAddUser= <TodosComp newTodoCallback={(data,userId)=>this.addTodo(data,userId)}  changeDataCallback={data=>this.changeTodos(data)} userActive={this.state.userActive} todos={todosOrAddUser} />
+        //console.log(todos)
+    }
+
+   
 
 
    
@@ -109,13 +126,18 @@ class App extends Component {
 
     return(
       <div class="row">
+
         <div class="col-sm-6" id="leftToolBar">
+        <h1 class="text-center">Mange Users</h1>
+
           <input class="form-control " onChange={e=>this.setState({search: e.target.value})} style={{margin:"10px"}} type="text" placeholder="Search" aria-label="Search"/>
-          <button type="button" style={{width:"100%", margin:"5px"}} class="btn btn-info">Add User</button>
+          <button onClick={()=>this.setState({isUserAddNeeded:true})} type="button" style={{width:"100%", margin:"5px"}} class="btn btn-info">Add User</button>
           {users}
         </div>
         <div class="col-sm-6" id="rightToolBar">
-       {todos}
+        <h1 class="text-center">Mange Todos&Posts</h1>
+
+       {todosOrAddUser}
         </div>
         
       </div>

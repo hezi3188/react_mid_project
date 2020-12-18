@@ -14,8 +14,9 @@ class App extends Component {
 
    deleteUser= (id)=> {
      let users=this.state.users.filter(item=>item.id!=id)
-    // let todos=this.state.todos.filter(item=>item.userId!=id)
-     this.setState({users:users})
+     let todos=this.state.todos.filter(item=>item.userId!=id)
+     let posts=this.state.posts.filter(item=>item.userId!=id)
+     this.setState({users:users,posts:posts,todos:todos})
    }
 
    updateUser= (user)=> {

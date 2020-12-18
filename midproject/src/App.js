@@ -64,7 +64,7 @@ class App extends Component {
 
   isPaintingColor= (id)=> {
     if( this.state.userActive==id){
-      return "red"
+      return "#17a2b8"
     }
     else return "rgba(0, 0, 0, 0)"
   }

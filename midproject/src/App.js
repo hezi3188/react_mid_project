@@ -152,7 +152,9 @@ class App extends Component {
 
           <input class="form-control " onChange={e=>this.setState({search: e.target.value})} style={{margin:"10px"}} type="text" placeholder="Search" aria-label="Search"/>
           <button onClick={()=>this.setState({isUserAddNeeded:true})} type="button" style={{width:"100%", margin:"5px"}} class="btn btn-info">Add User</button>
+          <div class ="users" >
           {users}
+          </div>
         </div>
         <div class="col-sm-6" id="rightToolBar">
         <h1 class="text-center">Mange Todos&Posts</h1>
